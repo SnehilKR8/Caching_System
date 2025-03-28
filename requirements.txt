@@ -1,0 +1,40 @@
+Download TPC-H Tool for generating dataset
+
+1. Extract the downloaded tools and navigate to the directory containing the dbgen utility.​
+
+2. Compile the tool using the provided makefile (e.g., make -f makefile.suite).​
+
+3. Run the dbgen utility to generate data at the desired scale factor. For example, to generate a 1GB dataset, execute:​
+    ./dbgen -s 1 
+
+4. For running above command you need MinGW check that with 
+    gcc --version and mingw32-make --version 
+
+5. If you have that MinGW, then run 
+    mingw32-make -f makefile.suite   or   make -f makefile.suite   ## For generating dbgen.exe and qgen.exe
+
+6. After generating makefile.suite Modify it for windows Find this section and change values
+    DATABASE    = SQLSERVER
+    MACHINE     = WIN
+    WORKLOAD    = TPCH
+    CC          = gcc
+
+7. Then finally run
+    dbgen -s 0.1
+
+8. .tbl files will be created move them into your caching system
+
+
+Problem I faced was in 5 or 6 step 
+I faced a error "error: invalid suffix "uI64" on integer constant"
+    So for that i have to make some changes in "config.h" which is located dbgen folder and the change was replacing all "RNG_A" and "RNG_C" with  "6364136223846793005ULL" and "1ULL".
+    #define RNG_A   6364136223846793005ULL
+    #define RNG_C   1ULL
+
+In code part
+# pip install dask[complete] dask-sql pandas psutil memory_profiler pyarrow
+
+Problem faced While implementing caching system.
+ValueError: No files satisfy the parquet_file_extension criteria (files must end with ('.parq', '.parquet', '.pq')).
+Assign Schema to table then it solved.
+
